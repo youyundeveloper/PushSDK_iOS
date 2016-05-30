@@ -1,0 +1,181 @@
+实惠推送服务iOS客户端SDK使用指南
+
+#功能介绍
+
+##授权
+
+开发者在网站注册后, 会提供给开发者ClientID和Secret, ClientID用于标识, Secret用于授权.
+
+默认提供的ClientID和Secret仅用作开发使用, 仅能登陆测试平台.
+
+默认UI封装的ClientID和Secret, 仅能登陆测试平台.
+
+正式平台的ClientID和Secret需要独立提交申请.
+
+##平台
+
+通讯平台有两种: 测试平台 , 正式平台
+
+测试平台: 开发测试使用, 新feature优先上线.
+正式平台: 开发者应用正式上线使用.
+
+开放平台除日常维护外, 平台所有 feature 先在测试平台上线, 后部署到正式平台.
+
+##功能
+
+推送
+
+ios, 开发者需上传推送证书, 平台提供聊天消息的APN推送服务.
+
+##WChatSDK 使用指南
+####请使用Xcode5以上的版本，iOS6.0及以上
+
+1.概要
+
+    iOS版本包括两部分
+
+    1.基于apple的APNs(Apple Push Notification Service)
+
+    2.应用内长连接(即在App启动并运行在前台时，SDK内部会运行一个Socket长连接连接到Server端，以接收消息推送。此长连接跟APNs时分开的，不经过APNs服务器)
+
+    SDK以.a静态链接库的形式提供，开发者只需在原有编码基础上添加少许代码，来注册实惠推送服务与绑定手机设备。
+
+
+2.使用说明
+
+    这里介绍如何配置和使用实惠推送服务，您也可以参照Demo来配置和使用实惠推送服务。
+
+    开发者在网站注册后, 会提供给开发者AppID和Secret, AppID用于标识, Secret用于授权.
+
+    默认提供的AppID和Secret仅用作开发使用, 仅能登陆测试平台.
+
+    正式平台的AppID和Secret需要独立提交申请.
+
+2.1. 创建APNs证书
+
+    APNs证书是一种扩展名为p12的文件，它是我们发送消息给APNs的证明。在开发时我们分Development环境与Distribution环境。所以p12会有两个版本：Development 与 Distribution。NOTE: 创建证书时请携带密码。
+
+    1.在Mac中，开启Keychina Access
+    2.选中你对应bundleID 的证书，注意 Development/Distribution。右键Export
+    3.Save。注意文件格式
+    4.保存时需要你给证书设定密码
+
+2.2. 搭建XCode运行环境
+
+    我们的libSHPushSDK库文件同时包含i386、x86_64、arm64、armv7的代码，所以libSHPushSDK将同时支持真机与模拟器。但由于Apple推送不支持模拟器，请使用真机测试功能。
+
+    创建工程, 将文件夹 SHPushSDK 拖入你的工程中;
+    选中工程，在Build Settings中搜素Other Linker Flags，增加 -ObjC 链接选项;
+    info里设置http请求权限：App Transport Security Settings -> Allow Arbitrary Loads -> YES;
+    Build Settings 设置 Enable Bitcode -> NO.
+
+    实惠推送服务iOS版支持的最低系统版本iOS5.0
+
+    引入库
+    libsqlite3.0.dylib
+    libz.dylib
+    CFNetwork.framework
+    CoreTelephony.framework
+    SystemConfiguration.framework
+    Foundation.framework
+    UIKit.framework
+    (如果已经引入,请忽略)
+
+2.3. 注册推送服务，绑定手机设备
+
+    工作流程：
+
+    1.当客户端应用启动时，调用以下代码注册推送服务，默认全天(0~24时)推送
+
+        #import "SHPushSDK.h"
+        - (BOOL)application:(UIApplication *)application
+                didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+            // 注册设备推送
+            [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET platform:TestPlatform];
+            return YES;
+        }
+
+    其中CLIENT_ID为申请的ID，SECRET为申请的授权key，
+    TestPlatform为平台选择，(TestPlatform:测试平台，OnlinePlatform：线上平台)
+
+    2.推送服务注册成功后，SDK会请求APNs建立连接并获得deviceToken，请求获得deviceToken成功后请调用以下代码来绑定手机设备
+
+        - (void)application:(UIApplication *)app
+                didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+        {
+            // 注册APNs成功, 注册deviceToken
+            [SHPushSDK trimDeviceToken:deviceToken];
+        }
+
+        - (void)application:(UIApplication *)app
+                didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+        {
+            // 注册APNs失败
+            // 自行处理
+        }
+        - (void)applicationDidEnterBackground:(UIApplication *)application {
+            // 客户端退到后台, 关闭服务器消息notice下发, 开启推送 (进入后台调用),设置下次push时的未读数。
+            [SHPushSDK applicationDidEnterBackground:application];
+        }
+
+        - (void)applicationWillEnterForeground:(UIApplication *)application {
+            // 客户端回到前台, 开启服务器消息notice下发, 关闭推送 (进入前台调用)
+            [SHPushSDK applicationWillEnterForeground:application];
+        }
+
+    3.push功能相关
+
+        1.设置推送时段
+            /*! @method
+            *  当前设备注册推送. push时段，需要登录成功后才能有效注册push.
+            *
+            *  @param pushToken ios注册的推送token
+            *  @param startTime push时段开始时间(0~24),默认0,  如: 开始时间为9,  结束时间为20, push时段从当天9 点到 当天  20点.
+            *  @param endTime   push时段结束时间(0~24),默认24, 如: 开始时间为20, 结束时间为9,  push时段从当天20点到 第二天 9点.
+            *  @param handler   回调block (是否操作成功, 如果错误则返回错误信息)
+            *
+            */
+            - (void)deviceRegisterPush:(NSString *)pushToken pushStartTime:(NSInteger)startTime endTime:(NSInteger)endTime completionHandler:(void (^)(BOOL isRegister, NSError* requestError))handler;
+
+        2.取消push服务
+            /*! @method
+            *  取消push服务.
+            *
+            *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+            */
+            - (void)deviceUnRegisterPush:(void (^)(BOOL isUnRegister, NSError* requestError))handler;
+
+        3.获取设备信息
+            /*! @method
+            *  获取设备信息.
+            *
+            *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+            */
+            - (void)deviceInfoWithCompletionHandler:(void (^)(NSDictionary *deviceInfo, NSError* requestError))handler;
+
+    4. IM相关
+
+        1.发送文本消息
+            /**
+            *  @brief 发送文本消息
+            *
+            *  @param tuid       收消息人Uid
+            *  @param content    消息内容
+            *  @param extContent 扩展消息内容
+            *  @param tag        消息标示, 用于回调
+            *  @param type       消息类型
+            *  @param timeout    调用超时时间
+            *  @param errPtr     错误句柄
+            *
+            *  @return 消息是否正常发送, YES是, NO否
+            */
+            - (BOOL)wchatSendMsg:(NSString *)tuid body:(NSData *)content extBody:(NSData *)extContent withTag:(NSInteger)tag withType:(WChatFileType)type withTimeout:(NSTimeInterval)timeout error:(NSError **)errPtr;
+
+
+
+3. :)
+
+
+
+
+

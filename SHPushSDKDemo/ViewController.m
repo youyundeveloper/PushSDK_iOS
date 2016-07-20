@@ -67,7 +67,7 @@ NSString * const yyTableViewCellIdentifer = @"yyTableViewCellIdentifer";
             UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, tFrame.size.height)];
             [sendBtn setTitle:@"say \"Hello\"" forState:UIControlStateNormal];
             [sendBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [sendBtn addTarget:self action:@selector(sayHelloBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//            [sendBtn addTarget:self action:@selector(sayHelloBtnAction) forControlEvents:UIControlEventTouchUpInside];
             self.toUIDTextField.rightView = sendBtn;
         }
     }

@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  *  - (void)applicationDidBecomeActive:(UIApplication *)application; 中调用。
  *  @param application
  */
-+ (void)applicationDidBecomeActive:(UIApplication *)application;
++ (void)applicationDidBecomeActive:(UIApplication *)application __deprecated_msg("Do not code it anymore");
 
 /*! @method
  *  客户端退到后台, 关闭服务器消息notice下发, 开启推送 (进入后台调用),设置下次push时的未读数。
@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  *  - (void)applicationDidEnterBackground:(UIApplication *)application;
  *  中调用。
  */
-+ (void)applicationDidEnterBackground:(UIApplication *)application;
++ (void)applicationDidEnterBackground:(UIApplication *)application __deprecated_msg("Do not code it anymore");
 
 /*! @method
  *  重新连接服务器。
@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  *  - (void)applicationWillEnterForeground:(UIApplication *)application;
  *  中调用。
  */
-+ (void)applicationWillEnterForeground:(UIApplication *)application;
++ (void)applicationWillEnterForeground:(UIApplication *)application __deprecated_msg("Do not code it anymore");
 
 #pragma mark - 服务相关接口
 
@@ -251,7 +251,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  *  @param instance   实例
  *  @param callbackId 消息标示
  */
--(void)onUnreadNoticeCallback:(SHPushSDK*)instance
+- (void)onUnreadNoticeCallback:(SHPushSDK*)instance
                withCallbackId:(NSInteger)callbackId;
 
 #pragma mark - 接收文本

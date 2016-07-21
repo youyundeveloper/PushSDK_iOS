@@ -22,7 +22,7 @@ NSString * const SECRET    = @"2e4b26434900f6c1bb06f4e478a3f4a3";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    // 初始化实惠推送
+    // 初始化推送
     [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET platform:YYPushSDKPlatformOnline];
     
     return YES;
@@ -36,12 +36,16 @@ NSString * const SECRET    = @"2e4b26434900f6c1bb06f4e478a3f4a3";
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    NSError *err = nil;
+    [[SHPushSDK sharedInstance] wchatSetUnreadNumber:application.applicationIconBadgeNumber withTag:0 error:&err];
+    if (err) {
+        NSLog(@"%s,error:%@", __FUNCTION__, err.localizedDescription);
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    // 实惠推送
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -53,7 +57,7 @@ NSString * const SECRET    = @"2e4b26434900f6c1bb06f4e478a3f4a3";
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // 实惠推送
+    // 推送
     self.deviceToken = [SHPushSDK trimDeviceToken:deviceToken];
 }
 

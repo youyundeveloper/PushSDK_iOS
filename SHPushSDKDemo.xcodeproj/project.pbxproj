@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		C63BB8511CE1C949008672D7 /* public.der in Resources */ = {isa = PBXBuildFile; fileRef = C63BB84D1CE1C949008672D7 /* public.der */; };
 		C63BB8531CE1C949008672D7 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = C63BB84F1CE1C949008672D7 /* README.md */; };
-		C69E53B21D3F188700CC8A25 /* libSHPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C69E53B11D3F188700CC8A25 /* libSHPushSDK.a */; };
 		C6D034661C3BB07900B451A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D034651C3BB07900B451A3 /* main.m */; };
 		C6D034801C3BB0E800B451A3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D0347B1C3BB0E800B451A3 /* ViewController.m */; };
 		C6D034811C3BB0E800B451A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D0347C1C3BB0E800B451A3 /* AppDelegate.m */; };
@@ -23,13 +22,13 @@
 		C6D0349C1C3BB19B00B451A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D0349B1C3BB19B00B451A3 /* CFNetwork.framework */; };
 		C6D0349F1C3BB1C400B451A3 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D0349D1C3BB1AE00B451A3 /* libz.1.dylib */; };
 		C6D034A11C3BB1DC00B451A3 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D034A01C3BB1DC00B451A3 /* libsqlite3.dylib */; };
+		C6FB170E1D40B2BB00AFE188 /* libSHPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6FB170D1D40B2BB00AFE188 /* libSHPushSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C63BB84A1CE1C949008672D7 /* SHPushSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPushSDK.h; sourceTree = "<group>"; };
 		C63BB84D1CE1C949008672D7 /* public.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public.der; sourceTree = "<group>"; };
 		C63BB84F1CE1C949008672D7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		C69E53B11D3F188700CC8A25 /* libSHPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSHPushSDK.a; sourceTree = "<group>"; };
 		C6D034611C3BB07900B451A3 /* SHPushSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHPushSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6D034651C3BB07900B451A3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C6D034751C3BB07900B451A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,6 +46,7 @@
 		C6D0349B1C3BB19B00B451A3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C6D0349D1C3BB1AE00B451A3 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = /usr/lib/libz.1.dylib; sourceTree = "<absolute>"; };
 		C6D034A01C3BB1DC00B451A3 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = /usr/lib/libsqlite3.dylib; sourceTree = "<absolute>"; };
+		C6FB170D1D40B2BB00AFE188 /* libSHPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSHPushSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6D034A11C3BB1DC00B451A3 /* libsqlite3.dylib in Frameworks */,
-				C69E53B21D3F188700CC8A25 /* libSHPushSDK.a in Frameworks */,
+				C6FB170E1D40B2BB00AFE188 /* libSHPushSDK.a in Frameworks */,
 				C6D0349F1C3BB1C400B451A3 /* libz.1.dylib in Frameworks */,
 				C6D0349C1C3BB19B00B451A3 /* CFNetwork.framework in Frameworks */,
 				C6D0349A1C3BB19600B451A3 /* CoreTelephony.framework in Frameworks */,
@@ -73,7 +73,7 @@
 			children = (
 				C63BB8491CE1C949008672D7 /* include */,
 				C63BB84D1CE1C949008672D7 /* public.der */,
-				C69E53B11D3F188700CC8A25 /* libSHPushSDK.a */,
+				C6FB170D1D40B2BB00AFE188 /* libSHPushSDK.a */,
 				C63BB84F1CE1C949008672D7 /* README.md */,
 			);
 			path = SHPushSDK;

@@ -1,7 +1,36 @@
-# PushSDK_iOS
-YouYun PushSDK for iOS
 # iOS远程推送
 本文主要介绍了使用 游云 Push 时，何时会收到远程推送、如何使用远程推送、如何获取远程推送的内容。
+# 工程准备
+注册了开发者账号之后，在进行开发 App 之前，您需要请前往 [开发者控制台](http://www.17youyun.com) 创建应用。您创建完应用之后，在您的应用中，会自动创建两套的环境，即：开发环境和生产环境。创建应用成功后会生成对应开发环境的App唯一的`ClientID`和`Secret`。
+下载的`SHPushSDK`包涵以下必要文件：
+
+ ```
+    include/SHPushSDK.h
+    public.der
+    libSHPushSDK.a
+    README.md
+ ```
+您在尝试集成 SDK 的时候，为了方便，可以新建一个工程。将下载的SDK导入工程，安装以下依赖库（如果已经导入请忽略）：
+
+- libsqlite3.tbd
+- Security.framework
+- CFNetwork.framework
+- CoreTelephony.framework
+- SystemConfiguration.framework
+- Foundation.framework
+- UIKit.framework
+
+如果您使用的是 Xcode 6.X 版本，则需要将上面的动态库 *.tbd 的后缀改为 *.dylib。
+
+由于SDK使用了`Category`，需要选中工程，在Build Settings中搜素Other Linker Flags，增加 `-ObjC` 链接选项。
+
+iOS 9 中，Apple 引入了新特性 App Transport Security (ATS)，默认要求 App 必须使用 https 协议。详情：[What's New in iOS 9](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-DontLinkElementID_13)。
+
+SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http。在 App 的 *Info.plist 中添加 NSAppTransportSecurity 类型Dictionary。
+在 NSAppTransportSecurity 下添加 NSAllowsArbitraryLoads 类型 Boolean，值设为 YES。
+
+[Demo地址](http://fir.im/yypush)，可在手机上直接安装测试。
+
 # 何时会收到远程推送
 ## 1. 游云 SDK 运行状态
 游云 SDK 根据 iOS App 运行的特性，主要有以下三种运行状态：
@@ -64,6 +93,113 @@ YouYun PushSDK for iOS
 
 6. 代码调用推送
 
+	单例初始化与释放:
+	
+	```
+	/**
+	 *  推送单例
+	 *
+	 *  @return 注册单例
+	 */
+	+ (SHPushSDK *)sharedInstance;
+	
+	/**
+	 *  @brief 释放单例
+	 */
+	+ (void)purgeSharedInstance;
+	
+	```
+
+	1. 授权设备、初始化SDK
+	
+	```
+	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	    // Override point for customization after application launch.
+	    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET platform:YYPushSDKPlatformOnline];
+    
+	    return YES;
+	}
+	
+	```
+	其中`CLIENT_ID`和`SECRET`为 [游云官网](http://www.17youyun.com) 生成的。
+	
+	2. 设置苹果服务器下发的Devicetoken
+	
+	```
+	- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+	    // 推送
+	    [SHPushSDK trimDeviceToken:deviceToken];
+	}
+	
+	```
+	
+	3. 设置推送服务相关
+	如果没有修改过推送时段，游云服务器默认设置推送时段为0~24时，如果设置过推送时间，游云服务器会保存推送时段，开发者不需要每次都调用设置推送时段接口。开发者也可以取消推送服务，取消推送后便不会收到推送消息。
+	
+	```
+	/*! @method
+	 *  当前设备注册推送. push时段，需要登录成功后才能有效注册push.
+	 *
+	 *  @param pushToken ios注册的推送token
+	 *  @param startTime push时段开始时间(0~24),默认0,  如: 开始时间为9,  结束时间为20, push时段从当天9 点到 当天  20点.
+	 *  @param endTime   push时段结束时间(0~24),默认24, 如: 开始时间为20, 结束时间为9,  push时段从当天20点到 第二天 9点.
+	 *  @param handler   回调block (是否操作成功, 如果错误则返回错误信息)
+	 *
+	 */
+	- (void)deviceRegisterPush:(NSString *)pushToken
+	             pushStartTime:(NSInteger)startTime
+	                   endTime:(NSInteger)endTime
+	         completionHandler:(void (^)(BOOL isRegister, NSError* requestError))handler;
+	
+	/*! @method
+	 *  取消push服务.
+	 *
+	 *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+	 */
+	- (void)deviceUnRegisterPush:(void (^)(BOOL isUnRegister, NSError* requestError))handler;
+	
+	/*! @method
+	 *  获取设备信息.
+	 *
+	 *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+	 */
+	- (void)deviceInfoWithCompletionHandler:(void (^)(NSDictionary *deviceInfo, NSError* requestError))handler;
+	
+	```
+	
+	4. 消息数相关
+	
+	游云服务器会对push消息计数，将未读数作为下次推送消息数推向苹果服务器，所以。请记得修改消息未读数量。SDK提供了两种设置消息未读数的借口，一种可以直接设置消息剩余未读数，另一种可以设置减少的消息未读数。
+	
+	```
+	/**
+	 *  @brief 设置消息未读数
+	 *
+	 *  @param number 未读数数量
+	 *  @param tag    消息标示, 用于回调
+	 *  @param errPtr 错误句柄
+	 *
+	 *  @return 是否发送设置, YES是, NO否
+	 */
+	- (BOOL)wchatSetUnreadNumber:(NSInteger)number
+	                     withTag:(NSInteger)tag
+	                       error:(NSError **)errPtr;
+	
+	/**
+	 *  @brief 设置减少消息未读数 - number
+	 *
+	 *  @param number 减掉的消息未读数
+	 *  @param tag    消息标示, 用于回调
+	 *  @param errPtr 错误句柄
+	 *
+	 *  @return 是否发送设置, YES是, NO否
+	 */
+	- (BOOL)wchatMinusUnreadNumber:(NSInteger)number
+	                       withTag:(NSInteger)tag
+	                         error:(NSError **)errPtr;
+	```
+	
+	
 
 ### 参考
 1. [Configuring Push Notifications](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html#//apple_ref/doc/uid/TP40012582-CH26-SW11)

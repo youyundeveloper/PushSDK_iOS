@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
 @interface SHPushSDK : NSObject
 
 /**
- *  是否验证成功
+ *  是否授权验证成功
  */
 @property (nonatomic, assign, readonly) BOOL isAuth;
 
@@ -66,32 +66,6 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  *  中调用trimDeviceToken。
  */
 + (NSString *)trimDeviceToken:(NSData *)deviceToken;
-
-/**
- *  客户端回到前台, 开启服务器消息notice下发, 关闭推送 (进入前台调用)
- *  @note  需要在UIApplicationDelegate的回调
- *  - (void)applicationDidBecomeActive:(UIApplication *)application; 中调用。
- *  @param application
- */
-+ (void)applicationDidBecomeActive:(UIApplication *)application __deprecated_msg("Do not code it anymore");
-
-/*! @method
- *  客户端退到后台, 关闭服务器消息notice下发, 开启推送 (进入后台调用),设置下次push时的未读数。
- *
- *  @note 需要在UIApplicationDelegate的回调
- *  - (void)applicationDidEnterBackground:(UIApplication *)application;
- *  中调用。
- */
-+ (void)applicationDidEnterBackground:(UIApplication *)application __deprecated_msg("Do not code it anymore");
-
-/*! @method
- *  重新连接服务器。
- *
- *  @note 需要在UIApplicationDelegate的回调
- *  - (void)applicationWillEnterForeground:(UIApplication *)application;
- *  中调用。
- */
-+ (void)applicationWillEnterForeground:(UIApplication *)application __deprecated_msg("Do not code it anymore");
 
 #pragma mark - 服务相关接口
 
@@ -145,7 +119,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
                        error:(NSError **)errPtr;
 
 /**
- *  @brief 设置消息未读数 - number
+ *  @brief 设置减少消息未读数 - number
  *
  *  @param number 减掉的消息未读数
  *  @param tag    消息标示, 用于回调

@@ -119,6 +119,9 @@ NSString * const yyTableViewCellIdentifer = @"yyTableViewCellIdentifer";
         NSString *userID = [userinfo objectForKey:@"id"];
         if (userID) {
             [weakSelf setTitle:userID];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"authError" message:error.localizedDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
         }
     });
     

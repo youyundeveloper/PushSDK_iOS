@@ -10,8 +10,10 @@
 
 #import "SHPushSDK.h"
 
-NSString * const CLIENT_ID = @"1-20113-576fe88462af94a8f0867fabdb09c2c2-ios";
-NSString * const SECRET    = @"2e4b26434900f6c1bb06f4e478a3f4a3";
+NSInteger const kPlatform = YYPushSDKPlatformDevelop;
+
+NSString * const CLIENT_ID = kPlatform == YYPushSDKPlatformOnline ? @"1-20113-576fe88462af94a8f0867fabdb09c2c2-ios" : @"1-2-2d22fedfde75367e4a7fa0a9d2f10ba1-ios";
+NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"2e4b26434900f6c1bb06f4e478a3f4a3" : @"bc6b9387ef8d306cdf16d6f29d40d3a1";
 
 @interface AppDelegate ()
 
@@ -23,7 +25,13 @@ NSString * const SECRET    = @"2e4b26434900f6c1bb06f4e478a3f4a3";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     // 初始化推送
-    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET platform:YYPushSDKPlatformOnline];
+    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET platform:kPlatform];
+    NSDictionary* pushNotificationKey = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (pushNotificationKey) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"pushLauchApp" message:pushNotificationKey.description delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    
     
     return YES;
 }

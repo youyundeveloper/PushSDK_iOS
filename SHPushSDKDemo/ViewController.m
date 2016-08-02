@@ -54,22 +54,6 @@ NSString * const yyTableViewCellIdentifer = @"yyTableViewCellIdentifer";
     } else if (indexPath.row == 1) {
         // 取消推送
         [cell.textLabel setText:@"取消推送"];
-    } else if (indexPath.row == 2) {
-        // 测试IM
-        if (!self.toUIDTextField) {
-            CGRect tFrame = cell.contentView.bounds;
-            tFrame.origin.x = 20;
-            self.toUIDTextField = [[UITextField alloc]initWithFrame:tFrame];
-            [self.toUIDTextField setPlaceholder:@"请输入对方ID"];
-            [self.toUIDTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
-            [cell.contentView addSubview:self.toUIDTextField];
-            self.toUIDTextField.rightViewMode = UITextFieldViewModeAlways;
-            UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, tFrame.size.height)];
-            [sendBtn setTitle:@"say \"Hello\"" forState:UIControlStateNormal];
-            [sendBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//            [sendBtn addTarget:self action:@selector(sayHelloBtnAction) forControlEvents:UIControlEventTouchUpInside];
-            self.toUIDTextField.rightView = sendBtn;
-        }
     }
     return cell;
 }
@@ -83,8 +67,6 @@ NSString * const yyTableViewCellIdentifer = @"yyTableViewCellIdentifer";
         if ([SHPushSDK sharedInstance].isAuth) {
             [self unRegisterPush];
         }
-    } else if (indexPath.row == 2) {
-        [self.toUIDTextField resignFirstResponder];
     }
 }
 

@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5B675017A0ECE9688EB7D34E55940B40FA90B4DF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5B675017A0ECE9688EB7D34E55940B40FA90B4DF" : 0,
+    "7CFDA8AEB3742BE7677403DA3A6C41A1C6B3AFA6" : 0,
+    "3528F7EB3CD1CA71730028012BED81F82E2BB93F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "5D014F02-EBAF-477B-85B6-41FD85243D04",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5B675017A0ECE9688EB7D34E55940B40FA90B4DF" : "pushsdkANDdemo\/",
+    "7CFDA8AEB3742BE7677403DA3A6C41A1C6B3AFA6" : "..\/SHPushSDK",
+    "3528F7EB3CD1CA71730028012BED81F82E2BB93F" : "..\/YouYunIM\/WChatSDK"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SHPushSDKDemo",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SHPushSDKDemo.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.hiwemeet.com:chatplussdk\/wchatsdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3528F7EB3CD1CA71730028012BED81F82E2BB93F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:youyundeveloper\/PushSDK_iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5B675017A0ECE9688EB7D34E55940B40FA90B4DF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.hiwemeet.com:chatplussdk\/pushsdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7CFDA8AEB3742BE7677403DA3A6C41A1C6B3AFA6"
+    }
+  ]
+}

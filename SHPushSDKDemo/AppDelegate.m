@@ -12,8 +12,8 @@
 
 NSInteger const kPlatform = YYPushSDKPlatformDevelop;
 
-NSString * const CLIENT_ID = kPlatform == YYPushSDKPlatformOnline ? @"1-20113-576fe88462af94a8f0867fabdb09c2c2-ios" : @"1-2-2d22fedfde75367e4a7fa0a9d2f10ba1-ios";
-NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"2e4b26434900f6c1bb06f4e478a3f4a3" : @"bc6b9387ef8d306cdf16d6f29d40d3a1";
+NSString * const CLIENT_ID = kPlatform == YYPushSDKPlatformOnline ? @"1-20509-95ac3aa791440341c8e27d8ad553df07-ios" : @"1-20133-265e76926ba4970ce7f737d6c9faa38b-ios";
+NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"8760009310c40c2e4c2de7ddaf7206ed" : @"43f735dcd80f5e1b8132301966746473";
 
 @interface AppDelegate ()
 
@@ -25,13 +25,12 @@ NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"2e4b264349
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     // 初始化推送
-    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET platform:kPlatform];
+    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET launchOptions:launchOptions platform:kPlatform];
     NSDictionary* pushNotificationKey = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (pushNotificationKey) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"pushLauchApp" message:pushNotificationKey.description delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
     }
-    
     
     return YES;
 }
@@ -64,6 +63,10 @@ NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"2e4b264349
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    
+}
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // 推送
     self.deviceToken = [SHPushSDK trimDeviceToken:deviceToken];
@@ -73,10 +76,19 @@ NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"2e4b264349
     NSLog(@"fun:%s, %@", __func__, error.description);
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    // Called when your app has received a remote notification.
+    [SHPushSDK didReceiveRemoteNotification:userInfo];
     
+    UILocalNotification *localNotification = [[UILocalNotification alloc]init];
+    localNotification.alertTitle = @"LocalNotification";
+    localNotification.alertBody = @"本地通知";
+    localNotification.userInfo = userInfo;
+    [application scheduleLocalNotification:localNotification];
 }
 
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSLog(@"收到本地通知: %@", notification);
+}
 
 @end

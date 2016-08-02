@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //sdk版本
-#define SHPushSDKVersion                @"1.0.0"
+#define SHPushSDKVersion                @"1.0.2"
 
 typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
     YYPushSDKPlatformOnline              = 1,    // 生产环境
@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  *
  *  @param client   客户端ID
  *  @param secret   客户端key(secret)
+ *  @param launchOptions 启动参数
  *  @param platform 平台
  *
  *  @note 必须在UIApplicationDelegate的回调中
@@ -56,6 +57,7 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  */
 + (void)startWithClientID:(NSString*)client
                    secret:(NSString*)secret
+            launchOptions:(NSDictionary *)launchOptions
                  platform:(YYPushSDKPatform)platform;
 
 /*! @method
@@ -66,6 +68,14 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  *  中调用trimDeviceToken。
  */
 + (NSString *)trimDeviceToken:(NSData *)deviceToken;
+/**
+ *  @method
+ *  Called when your app has received a remote notification.
+ *  app运行时收到推送, 用来统计
+ *
+ *  @param userInfo app收到的苹果推送信息
+ */
++ (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 #pragma mark - 服务相关接口
 

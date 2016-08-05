@@ -45,10 +45,10 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
 
 /**
  *  @method
- *  添加推送
+ *  初始化SDK，设置授权信息(默认使用游云提供的UDID)
  *
- *  @param client   客户端ID
- *  @param secret   客户端key(secret)
+ *  @param client        游云app帐号ID
+ *  @param secret        游云app帐号密钥
  *  @param launchOptions 启动参数
  *  @param platform 平台
  *
@@ -60,6 +60,20 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
             launchOptions:(NSDictionary *)launchOptions
                  platform:(YYPushSDKPatform)platform;
 
+/**
+ *  初始化SDK，设置授权信息
+ *
+ *  @param client        游云app帐号ID
+ *  @param secret        游云app帐号密钥
+ *  @param udid          设备标识ID
+ *  @param launchOptions 应用启动参数
+ *  @param platform      平台
+ */
++ (void)startWithClientID:(NSString*)client
+                   secret:(NSString*)secret
+                     udid:(NSString *)udid
+            launchOptions:(NSDictionary *)launchOptions
+                 platform:(YYPushSDKPatform)platform;
 /*! @method
  *  获取设备token。
  *
@@ -113,33 +127,30 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  * @see onLogoutWithError:
  */
 - (void)Logout;
+/**
+ *  获取游云提供的UDID
+ *
+ *  @return UDID字符串
+ */
++ (NSString *)getUDID;
 
 #pragma mark - 消息未读数设置
 /**
- *  @brief 设置消息未读数
+ *  @brief 设置消息的未读数量(短链接)
  *
- *  @param number 未读数数量
- *  @param tag    消息标示, 用于回调
- *  @param errPtr 错误句柄
- *
- *  @return 是否发送设置, YES是, NO否
+ *  @param number  用户还剩的消息未读数
+ *  @param handler 回调
  */
-- (BOOL)wchatSetUnreadNumber:(NSInteger)number
-                     withTag:(NSInteger)tag
-                       error:(NSError **)errPtr;
-
+- (void)wchatSetMsgUnreadNumber:(NSInteger)number
+                     completion:(void (^)(BOOL success, NSError *err))handler;
 /**
- *  @brief 设置减少消息未读数 - number
+ *  @brief 设置消息减少的未读数量(短链接)
  *
- *  @param number 减掉的消息未读数
- *  @param tag    消息标示, 用于回调
- *  @param errPtr 错误句柄
- *
- *  @return 是否发送设置, YES是, NO否
+ *  @param number  要减少的未读数
+ *  @param handler 回调
  */
-- (BOOL)wchatMinusUnreadNumber:(NSInteger)number
-                       withTag:(NSInteger)tag
-                         error:(NSError **)errPtr;
+- (void)wchatReduceMsgUnreadNumber:(NSInteger)number
+                        completion:(void (^)(BOOL success, NSError *err))handler;
 
 @end
 
@@ -157,28 +168,6 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
 - (void)onwchatAuth:(SHPushSDK *)instance
            userinfo:(NSDictionary *)userinfo
           withError:(NSError *)error;
-/**
- *  @brief 连接成功回调
- *
- *  @param instance 实例
- */
-- (void)onConnected: (SHPushSDK *)instance;
-
-/**
- *  @brief 连接断开回调
- *
- *  @param instance 实例
- *  @param error    如连接出错断开, 则返回错误消息
- */
-- (void)onDisconnect:(SHPushSDK *)instance withError:(NSError *)error;
-
-/**
- *  @brief 向服务器发送断开连接的消息回调
- *
- *  @param instance 实例
- *  @param error    如果设置失败, 则返回错误信息
- */
-- (void)onClose:(SHPushSDK *)instance withError:(NSError *)error;
 
 /**
  *  @brief 退出登陆回调
@@ -199,24 +188,6 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
           withTag:(NSInteger)tag
         withError:(NSError *)error;
 
-#pragma mark - 前后台切换
-/**
- *  @brief 客户端退到后台, 关闭服务器消息notice下发, 开启推送回调
- *
- *  @param instance 实例
- *  @param error    如果设置失败, 则返回错误信息
- */
-- (void)onPreClose:(SHPushSDK *)instance withError:(NSError *)error;
-
-/**
- *  @brief 客户端回到前台, 开启服务器消息notice下发, 关闭推送
- *
- *  @param instance 实例
- *  @param error    如果设置失败, 则返回错误信息
- */
-- (void)onKeepAlive:(SHPushSDK *)instance
-          withError:(NSError *)error;
-
 #pragma mark - 连接状态
 
 /**
@@ -227,16 +198,6 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  */
 - (void)onConnectState:(SHPushSDK *)instance
                  state:(int)state;
-
-#pragma mark - 未读数设置回调
-/**
- *  未读数设置回调
- *
- *  @param instance   实例
- *  @param callbackId 消息标示
- */
-- (void)onUnreadNoticeCallback:(SHPushSDK*)instance
-               withCallbackId:(NSInteger)callbackId;
 
 #pragma mark - 接收文本
 /**
@@ -259,17 +220,6 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
           content:(NSData *)content
           extBody:(NSData *)extContent
         withError:(NSError *)error;
-
-#pragma mark - 获取个人 & 群组消息未读数
-/**
- *  @brief 获取消息未读数
- *
- *  @param user  用户消息未读数, 字典格式 @{ @"用户id": @{ @"num": NSNumber 未读数, @"time": NSNumber 消息时间 }, @"用户id": @{ @"num": NSNumber 未读数, @"time": NSNumber 消息时间 } }
- *  @param group 群组消息未读数, 字典格式 @{ @"群组id": @{ @"num": NSNumber 未读数, @"time": NSNumber 消息时间 }, @"群组id": @{ @"num": NSNumber 未读数, @"time": NSNumber 消息时间 } }
- */
-- (void)onRecvUnreadNumber:(SHPushSDK *)instance
-                  withUser:(NSDictionary *)user
-                 withGroup:(NSDictionary *)group;
 
 
 @end

@@ -94,116 +94,106 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
 
 ## 代码调用推送
 
-1. 授权设备、初始化SDK,单例初始化与释放:
+1.  授权设备、初始化SDK,单例初始化与释放:
 
-   ```objective-c
-   /**
-   *  推送单例
-   *
-   *  @return 注册单例
-   */
-   + (SHPushSDK *)sharedInstance;
+    ```objective-c
+    /**
+     *  推送单例
+     *
+     *  @return 注册单例
+    */
+    + (SHPushSDK *)sharedInstance;
 
-   /**
-   *  @brief 释放单例
-   */
-   + (void)purgeSharedInstance;
-   ```
+    /**
+     *  @brief 释放单例
+    */
+    + (void)purgeSharedInstance;
+    ```
 
-   ```objective-c
-   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-   // Override point for customization after application launch.
-   [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET launchOptions:launchOptions platform:YYPushSDKPlatformOnline];
+    ```objective-c
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Override point for customization after application launch.
+    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET launchOptions:launchOptions platform:YYPushSDKPlatformOnline];
 
-   return YES;
-   }
-   ```
-   其中`CLIENT_ID`和`SECRET`为 [游云官网](http://www.17youyun.com) 生成的。
+    return YES;
+    }
+    ```
+    其中`CLIENT_ID`和`SECRET`为 [游云官网](http://www.17youyun.com) 生成的。
 
-2. 设置苹果服务器下发的Devicetoken
+2.  设置苹果服务器下发的Devicetoken
 
-   ```objective-c
-   - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-   // 推送
-   [SHPushSDK trimDeviceToken:deviceToken];
-   }
-   ```
+    ```objective-c
+    - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // 推送
+    [SHPushSDK trimDeviceToken:deviceToken];
+    }
+    ```
 
-3. 设置推送服务相关
+3.  设置推送服务相关
 
-   如果没有修改过推送时段，游云服务器默认设置推送时段为0~24时，如果设置过推送时间，游云服务器会保存推送时段，开发者不需要每次都调用设置推送时段接口。开发者也可以取消推送服务，取消推送后便不会收到推送消息。
+    如果没有修改过推送时段，游云服务器默认设置推送时段为0~24时，如果设置过推送时间，游云服务器会保存推送时段，开发者不需要每次都调用设置推送时段接口。开发者也可以取消推送服务，取消推送后便不会收到推送消息。
 
-   ```objective-c
-   /*! @method
-   *  当前设备注册推送. push时段，需要登录成功后才能有效注册push.
-   *
-   *  @param pushToken ios注册的推送token
-   *  @param startTime push时段开始时间(0~24),默认0,  如: 开始时间为9,  结束时间为20, push时段从当天9 点到 当天  20点.
-   *  @param endTime   push时段结束时间(0~24),默认24, 如: 开始时间为20, 结束时间为9,  push时段从当天20点到 第二天 9点.
-   *  @param handler   回调block (是否操作成功, 如果错误则返回错误信息)
-   *
-   */
-   - (void)deviceRegisterPush:(NSString *)pushToken pushStartTime:(NSInteger)startTime endTime:(NSInteger)endTime completionHandler:(void (^)(BOOL isRegister, NSError* requestError))handler;
+    ```objective-c
+    /*! @method
+     *  当前设备注册推送. push时段，需要登录成功后才能有效注册push.
+     *
+     *  @param pushToken ios注册的推送token
+     *  @param startTime push时段开始时间(0~24),默认0,  如: 开始时间为9,  结束时间为20, push时段从当天9 点到 当天  20点.
+     *  @param endTime   push时段结束时间(0~24),默认24, 如: 开始时间为20, 结束时间为9,  push时段从当天20点到 第二天 9点.
+     *  @param handler   回调block (是否操作成功, 如果错误则返回错误信息)
+     *
+    */
+    - (void)deviceRegisterPush:(NSString *)pushToken pushStartTime:(NSInteger)startTime endTime:(NSInteger)endTime completionHandler:(void (^)(BOOL isRegister, NSError* requestError))handler;
 
-   /*! @method
-   *  取消push服务.
-   *
-   *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
-   */
-   - (void)deviceUnRegisterPush:(void (^)(BOOL isUnRegister, NSError* requestError))handler;
+    /*! @method
+     *  取消push服务.
+     *
+     *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+     */
+    - (void)deviceUnRegisterPush:(void (^)(BOOL isUnRegister, NSError* requestError))handler;
 
-   /*! @method
-   *  获取设备信息.
-   *
-   *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
-   */
-   - (void)deviceInfoWithCompletionHandler:(void (^)(NSDictionary *deviceInfo, NSError* requestError))handler;
-   ```
+    /*! @method
+     *  获取设备信息.
+     *
+     *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+    */
+    - (void)deviceInfoWithCompletionHandler:(void (^)(NSDictionary *deviceInfo, NSError* requestError))handler;
+    ```
 
-4. 消息数相关
+4.  消息数相关
 
-   游云服务器会对push消息计数，将未读数作为下次推送消息数推向苹果服务器，所以。请记得修改消息未读数量。SDK提供了两种设置消息未读数的借口，一种可以直接设置消息剩余未读数，另一种可以设置减少的消息未读数。 
+    游云服务器会对push消息计数，将未读数作为下次推送消息数推向苹果服务器，所以。请记得修改消息未读数量。SDK提供了两种设置消息未读数的借口，一种可以直接设置消息剩余未读数，另一种可以设置减少的消息未读数。 
 
-   ```objective-c
-   /**
-   *  @brief 设置消息未读数
-   *
-   *  @param number 未读数数量
-   *  @param tag    消息标示, 用于回调
-   *  @param errPtr 错误句柄
-   *
-   *  @return 是否发送设置, YES是, NO否
-   */
-   - (BOOL)wchatSetUnreadNumber:(NSInteger)number
-   withTag:(NSInteger)tag
-   error:(NSError **)errPtr;
+    ```objective-c
+     /**
+      *  @brief 设置消息的未读数量(短链接)
+      *
+      *  @param number  用户还剩的消息未读数
+      *  @param handler 回调
+     */
+     - (void)wchatSetMsgUnreadNumber:(NSInteger)number completion:(void (^)(BOOL success, NSError *err))handler;
+     /**
+      *  @brief 设置消息减少的未读数量(短链接)
+      *
+      *  @param number  要减少的未读数
+      *  @param handler 回调
+     */
+     - (void)wchatReduceMsgUnreadNumber:(NSInteger)number completion:(void (^)(BOOL success, NSError *err))handler;
+    ```
 
-   /**
-   *  @brief 设置减少消息未读数 - number
-   *
-   *  @param number 减掉的消息未读数
-   *  @param tag    消息标示, 用于回调
-   *  @param errPtr 错误句柄
-   *
-   *  @return 是否发送设置, YES是, NO否
-   */
-   - (BOOL)wchatMinusUnreadNumber:(NSInteger)number
-   withTag:(NSInteger)tag
-   error:(NSError **)errPtr;
-   ```
 
 5. 统计消息
 
-   ```objective-c
-   /**
-   *  @method
-   *  Called when your app has received a remote notification.
-   *  app运行时收到推送, 用来统计
-   *
-   *  @param userInfo app收到的苹果推送信息
-   */
-   + (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
-   ```
+    ```objective-c
+    /**
+     *  @method
+     *  Called when your app has received a remote notification.
+     *  app运行时收到推送, 用来统计
+     *
+     *  @param userInfo app收到的苹果推送信息
+    */
+    + (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
+    ```
 
    ​
 

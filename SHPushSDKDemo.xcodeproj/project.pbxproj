@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C6206A6E1D547FC00044C77A /* libSHPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6206A6D1D547FC00044C77A /* libSHPushSDK.a */; };
 		C63BB8531CE1C949008672D7 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = C63BB84F1CE1C949008672D7 /* README.md */; };
 		C69AF64A1D504DAD00F49A5A /* public.der in Resources */ = {isa = PBXBuildFile; fileRef = C69AF6491D504DAD00F49A5A /* public.der */; };
 		C6D034661C3BB07900B451A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D034651C3BB07900B451A3 /* main.m */; };
@@ -22,10 +23,10 @@
 		C6D0349C1C3BB19B00B451A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D0349B1C3BB19B00B451A3 /* CFNetwork.framework */; };
 		C6D0349F1C3BB1C400B451A3 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D0349D1C3BB1AE00B451A3 /* libz.1.dylib */; };
 		C6D034A11C3BB1DC00B451A3 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D034A01C3BB1DC00B451A3 /* libsqlite3.dylib */; };
-		C6F93E5F1D509FDA00C19668 /* libSHPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6F93E5E1D509FDA00C19668 /* libSHPushSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C6206A6D1D547FC00044C77A /* libSHPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSHPushSDK.a; sourceTree = "<group>"; };
 		C63BB84A1CE1C949008672D7 /* SHPushSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPushSDK.h; sourceTree = "<group>"; };
 		C63BB84F1CE1C949008672D7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C69AF6491D504DAD00F49A5A /* public.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public.der; sourceTree = "<group>"; };
@@ -46,7 +47,6 @@
 		C6D0349B1C3BB19B00B451A3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C6D0349D1C3BB1AE00B451A3 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = /usr/lib/libz.1.dylib; sourceTree = "<absolute>"; };
 		C6D034A01C3BB1DC00B451A3 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = /usr/lib/libsqlite3.dylib; sourceTree = "<absolute>"; };
-		C6F93E5E1D509FDA00C19668 /* libSHPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSHPushSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6D034A11C3BB1DC00B451A3 /* libsqlite3.dylib in Frameworks */,
-				C6F93E5F1D509FDA00C19668 /* libSHPushSDK.a in Frameworks */,
+				C6206A6E1D547FC00044C77A /* libSHPushSDK.a in Frameworks */,
 				C6D0349F1C3BB1C400B451A3 /* libz.1.dylib in Frameworks */,
 				C6D0349C1C3BB19B00B451A3 /* CFNetwork.framework in Frameworks */,
 				C6D0349A1C3BB19600B451A3 /* CoreTelephony.framework in Frameworks */,
@@ -71,8 +71,8 @@
 		C63BB8481CE1C949008672D7 /* SHPushSDK */ = {
 			isa = PBXGroup;
 			children = (
-				C6F93E5E1D509FDA00C19668 /* libSHPushSDK.a */,
 				C63BB8491CE1C949008672D7 /* include */,
+				C6206A6D1D547FC00044C77A /* libSHPushSDK.a */,
 				C63BB84F1CE1C949008672D7 /* README.md */,
 			);
 			path = SHPushSDK;

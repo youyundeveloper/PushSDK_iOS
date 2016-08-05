@@ -26,6 +26,9 @@ NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"8760009310
     // Override point for customization after application launch.
     // 初始化推送
     [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET launchOptions:launchOptions platform:kPlatform];
+    // 如果不使用游云提供的UDID，请调用以下方法
+//    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET udid:@"yy-myselfudid-1000" launchOptions:launchOptions platform:kPlatform];
+    
     NSDictionary* pushNotificationKey = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (pushNotificationKey) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"pushLauchApp" message:pushNotificationKey.description delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -44,11 +47,19 @@ NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"8760009310
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    NSError *err = nil;
-    [[SHPushSDK sharedInstance] wchatSetUnreadNumber:application.applicationIconBadgeNumber withTag:0 error:&err];
-    if (err) {
-        NSLog(@"%s,error:%@", __FUNCTION__, err.localizedDescription);
-    }
+    
+//    [[SHPushSDK sharedInstance] wchatSetMsgUnreadNumber:0 completion:^(BOOL success, NSError *err) {
+//        if (err) {
+//            NSLog(@"%s,error:%@", __FUNCTION__, err.localizedDescription);
+//        }
+//    }];
+    
+    [[SHPushSDK sharedInstance] wchatReduceMsgUnreadNumber:1 completion:^(BOOL success, NSError *err) {
+        if (err) {
+            NSLog(@"%s,error:%@", __FUNCTION__, err.localizedDescription);
+        }
+    }];
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

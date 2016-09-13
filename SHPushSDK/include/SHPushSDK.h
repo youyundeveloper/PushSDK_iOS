@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //sdk版本
-#define SHPushSDKVersion                @"1.0.2"
+#define SHPushSDKVersion                @"1.0.3"
 
 typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
     YYPushSDKPlatformOnline              = 1,    // 生产环境

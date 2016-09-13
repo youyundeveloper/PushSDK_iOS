@@ -12,8 +12,8 @@
 
 NSInteger const kPlatform = YYPushSDKPlatformDevelop;
 
-NSString * const CLIENT_ID = kPlatform == YYPushSDKPlatformOnline ? @"1-20509-95ac3aa791440341c8e27d8ad553df07-ios" : @"1-20133-265e76926ba4970ce7f737d6c9faa38b-ios";
-NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"8760009310c40c2e4c2de7ddaf7206ed" : @"43f735dcd80f5e1b8132301966746473";
+NSString * const CLIENT_ID = kPlatform == YYPushSDKPlatformOnline ? @"1-20525-4ab3a7c3ddb665945d0074f51e979ef0-ios" : @"1-20142-2e563db99a8ca41df48973b0c43ea50a-ios";
+NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"6f3efde9fb49a76ff6bfb257f74f4d5b" : @"ace518dab1fde58eacb126df6521d34c";
 
 @interface AppDelegate ()
 
@@ -24,10 +24,10 @@ NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"8760009310
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    // 初始化推送
+    // 初始化推送，使用游云提供的UDID
     [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET launchOptions:launchOptions platform:kPlatform];
     // 如果不使用游云提供的UDID，请调用以下方法
-//    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET udid:@"yy-myselfudid-1000" launchOptions:launchOptions platform:kPlatform];
+//    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET udid:@"yourselfUDID" launchOptions:launchOptions platform:kPlatform];
     
     NSDictionary* pushNotificationKey = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (pushNotificationKey) {
@@ -48,17 +48,17 @@ NSString * const SECRET    = kPlatform == YYPushSDKPlatformOnline ? @"8760009310
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
-//    [[SHPushSDK sharedInstance] wchatSetMsgUnreadNumber:0 completion:^(BOOL success, NSError *err) {
-//        if (err) {
-//            NSLog(@"%s,error:%@", __FUNCTION__, err.localizedDescription);
-//        }
-//    }];
-    
-    [[SHPushSDK sharedInstance] wchatReduceMsgUnreadNumber:1 completion:^(BOOL success, NSError *err) {
+    [[SHPushSDK sharedInstance] wchatSetMsgUnreadNumber:0 completion:^(BOOL success, NSError *err) {
         if (err) {
             NSLog(@"%s,error:%@", __FUNCTION__, err.localizedDescription);
         }
     }];
+    
+//    [[SHPushSDK sharedInstance] wchatReduceMsgUnreadNumber:1 completion:^(BOOL success, NSError *err) {
+//        if (err) {
+//            NSLog(@"%s,error:%@", __FUNCTION__, err.localizedDescription);
+//        }
+//    }];
     
 }
 

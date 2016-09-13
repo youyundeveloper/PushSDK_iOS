@@ -117,13 +117,13 @@ NSString * const yyTableViewCellIdentifer = @"yyTableViewCellIdentifer";
           content:(NSData *)content
           extBody:(NSData *)extContent
         withError:(NSError *)error {
-    __weak typeof(self) weakSelf = self;
+//    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         // update UI
         NSLog(@"onRecvMsg:messageId:%@, fromUid: %@, toUid: %@,time: %d, content:%@, extContent:%@",messageId, fromUid, toUid, (int)timevalue, [[NSString alloc] initWithData:content encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:extContent encoding:NSUTF8StringEncoding]);
             // 文本消息
-        UIAlertView *noticeTextAlertView = [[UIAlertView alloc]initWithTitle:@"notice" message:[NSString stringWithFormat:@"%@, from user: %@", [[NSString alloc] initWithData:content encoding:NSUTF8StringEncoding], fromUid] delegate:weakSelf cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [noticeTextAlertView show];
+//        UIAlertView *noticeTextAlertView = [[UIAlertView alloc]initWithTitle:@"notice" message:[NSString stringWithFormat:@"%@, from user: %@", [[NSString alloc] initWithData:content encoding:NSUTF8StringEncoding], fromUid] delegate:weakSelf cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        [noticeTextAlertView show];
     });
 }
 

@@ -90,8 +90,6 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
    ![设置成功](http://img.blog.csdn.net/20160503165046857)
 
 
-
-
 ## 代码调用推送
 
 1.  授权设备、初始化SDK,单例初始化与释放:
@@ -109,7 +107,7 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
     */
     + (void)purgeSharedInstance;
     ```
-
+    
     ```objective-c
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -118,7 +116,24 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
     return YES;
     }
     ```
+
     其中`CLIENT_ID`和`SECRET`为 [游云官网](http://www.17youyun.com) 生成的。
+    为了标识设备唯一，游云SDK默认使用`OpenUDID`开源项目作为设备的UDID，开发者也可以使用自己规则的UDID，并且调用以下方式初始化SDK：
+
+    ```objective-c
+    /**
+     *  初始化SDK，设置授权信息
+     *
+     *  @param client        游云app帐号ID
+     *  @param secret        游云app帐号密钥
+     *  @param udid          设备标识ID
+     *  @param launchOptions 应用启动参数
+     *  @param platform      平台
+     */
+    + (void)startWithClientID:(NSString*)client secret:(NSString*)secret udid:(NSString *)udid launchOptions:(NSDictionary *)launchOptions platform:(YYPushSDKPatform)platform;
+
+    ```
+
 
 2.  设置苹果服务器下发的Devicetoken
 

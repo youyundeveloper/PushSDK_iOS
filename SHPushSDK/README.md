@@ -107,11 +107,11 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
     */
     + (void)purgeSharedInstance;
     ```
-    
+
     ```objective-c
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET launchOptions:launchOptions platform:YYPushSDKPlatformOnline];
+        [SHPushSDK startWithClientID:CLIENT_ID secret:SECRET udid:@"youUDID" delegate:self launchOptions:launchOptions platform:kPlatform];
 
     return YES;
     }
@@ -122,34 +122,39 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
 
     ```objective-c
     /**
-     *  初始化SDK，设置授权信息
+     *  初始化SDK，设置授权信息。适配iOS 10
      *
      *  @param client        游云app帐号ID
      *  @param secret        游云app帐号密钥
-     *  @param udid          设备标识ID
+     *  @param udid          设备标识ID，如果使用游云提供的UDID，请传nil
+     *  @param uDelegate     iOS 10
      *  @param launchOptions 应用启动参数
      *  @param platform      平台
      */
-    + (void)startWithClientID:(NSString*)client secret:(NSString*)secret udid:(NSString *)udid launchOptions:(NSDictionary *)launchOptions platform:(YYPushSDKPatform)platform;
-
+    + (void)startWithClientID:(NSString *)client
+                       secret:(NSString *)secret
+                         udid:(NSString *)udid
+                     delegate:(id <UNUserNotificationCenterDelegate>)uDelegate
+                launchOptions:(NSDictionary *)launchOptions
+                     platform:(YYPushSDKPatform)platform;
     ```
 
 
-2.  设置苹果服务器下发的Devicetoken
+2.   设置苹果服务器下发的Devicetoken
 
-    ```objective-c
-    - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // 推送
-    [SHPushSDK trimDeviceToken:deviceToken];
-    }
-    ```
+     ```objective-c
+     - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+     // 推送
+       [SHPushSDK trimDeviceToken:deviceToken];
+     }
+     ```
 
-3.  设置推送服务相关
+3.   设置推送服务相关
 
-    如果没有修改过推送时段，游云服务器默认设置推送时段为0~24时，如果设置过推送时间，游云服务器会保存推送时段，开发者不需要每次都调用设置推送时段接口。开发者也可以取消推送服务，取消推送后便不会收到推送消息。
+        如果没有修改过推送时段，游云服务器默认设置推送时段为0~24时，如果设置过推送时间，游云服务器会保存推送时段，开发者不需要每次都调用设置推送时段接口。开发者也可以取消推送服务，取消推送后便不会收到推送消息。
 
-    ```objective-c
-    /*! @method
+     ```objective-c
+        /*! @method
      *  当前设备注册推送. push时段，需要登录成功后才能有效注册push.
      *
      *  @param pushToken ios注册的推送token
@@ -157,23 +162,24 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
      *  @param endTime   push时段结束时间(0~24),默认24, 如: 开始时间为20, 结束时间为9,  push时段从当天20点到 第二天 9点.
      *  @param handler   回调block (是否操作成功, 如果错误则返回错误信息)
      *
-    */
-    - (void)deviceRegisterPush:(NSString *)pushToken pushStartTime:(NSInteger)startTime endTime:(NSInteger)endTime completionHandler:(void (^)(BOOL isRegister, NSError* requestError))handler;
-
-    /*! @method
-     *  取消push服务.
-     *
-     *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
      */
-    - (void)deviceUnRegisterPush:(void (^)(BOOL isUnRegister, NSError* requestError))handler;
+     - (void)deviceRegisterPush:(NSString *)pushToken pushStartTime:(NSInteger)startTime endTime:(NSInteger)endTime completionHandler:(void (^)(BOOL isRegister, NSError* requestError))handler;
 
-    /*! @method
-     *  获取设备信息.
-     *
-     *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
-    */
-    - (void)deviceInfoWithCompletionHandler:(void (^)(NSDictionary *deviceInfo, NSError* requestError))handler;
-    ```
+     /*! @method
+      *  取消push服务.
+      *
+      *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+      */
+     - (void)deviceUnRegisterPush:(void (^)(BOOL isUnRegister, NSError* requestError))handler;
+
+     /*! @method
+      *  获取设备信息.
+      *
+      *  @param handler 回调block (设备信息注册信息, 如果错误则返回错误信息)
+     */
+     - (void)deviceInfoWithCompletionHandler:(void (^)(NSDictionary *deviceInfo, NSError* requestError))handler;
+     ```
+
 
 4.  消息数相关
 
@@ -197,23 +203,48 @@ SDK 在 iOS9 及以上需要使用 http，您需要设置在 App 中使用 http�
     ```
 
 
-5. 统计消息
+5.   统计消息
 
-    ```objective-c
-    /**
+     ```objective-c
+      /**
      *  @method
      *  Called when your app has received a remote notification.
      *  app运行时收到推送, 用来统计
      *
      *  @param userInfo app收到的苹果推送信息
-    */
-    + (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
-    ```
+     */
+     + (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
+     ```
 
-   ​
+6.   iOS 10适配
 
+     适配iOS 10 的推送回调处理。如果想使用游云的推送统计功能，请添加点击推送收集。
 
+     ```objective-c
+     - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+         
+         NSDictionary *userInfo = notification.request.content.userInfo;
+         if ([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+             // 远程推送，点击统计
+             [SHPushSDK didReceiveRemoteNotification:userInfo];
+         }
+         completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound);
+     }
+
+     - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+         NSDictionary *userInfo = response.notification.request.content.userInfo;
+         if ([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+             // 远程推送，点击统计
+             [SHPushSDK didReceiveRemoteNotification:userInfo];
+         }
+         
+         completionHandler();
+     }
+     ```
+
+     ​
 
 ### 参考
+
 1. [Configuring Push Notifications](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html#//apple_ref/doc/uid/TP40012582-CH26-SW11)
 2. [APNs Provider API](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/APNsProviderAPI.html)

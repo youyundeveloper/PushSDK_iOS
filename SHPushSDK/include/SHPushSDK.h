@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <UserNotifications/UserNotifications.h>
+
 
 //sdk版本
-#define SHPushSDKVersion                @"1.0.3"
+#define SHPushSDKVersion                @"1.0.4.0"
 
 typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
     YYPushSDKPlatformOnline              = 1,    // 生产环境
@@ -43,37 +45,28 @@ typedef NS_ENUM(NSInteger, YYPushSDKPatform) {
  */
 + (void)purgeSharedInstance;
 
-/**
- *  @method
- *  初始化SDK，设置授权信息(默认使用游云提供的UDID)
- *
- *  @param client        游云app帐号ID
- *  @param secret        游云app帐号密钥
- *  @param launchOptions 启动参数
- *  @param platform 平台
- *
- *  @note 必须在UIApplicationDelegate的回调中
- *   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions; 调用loadEngineWithPush。
- */
-+ (void)startWithClientID:(NSString*)client
-                   secret:(NSString*)secret
-            launchOptions:(NSDictionary *)launchOptions
-                 platform:(YYPushSDKPatform)platform;
-
-/**
- *  初始化SDK，设置授权信息
- *
- *  @param client        游云app帐号ID
- *  @param secret        游云app帐号密钥
- *  @param udid          设备标识ID
- *  @param launchOptions 应用启动参数
- *  @param platform      平台
- */
 + (void)startWithClientID:(NSString*)client
                    secret:(NSString*)secret
                      udid:(NSString *)udid
             launchOptions:(NSDictionary *)launchOptions
+                 platform:(YYPushSDKPatform)platform __deprecated;
+/**
+ *  初始化SDK，设置授权信息。适配iOS 10
+ *
+ *  @param client        游云app帐号ID
+ *  @param secret        游云app帐号密钥
+ *  @param udid          设备标识ID，如果使用游云提供的UDID，请传nil
+ *  @param uDelegate     iOS 10
+ *  @param launchOptions 应用启动参数
+ *  @param platform      平台
+ */
++ (void)startWithClientID:(NSString *)client
+                   secret:(NSString *)secret
+                     udid:(NSString *)udid
+                 delegate:(id <UNUserNotificationCenterDelegate>)uDelegate
+            launchOptions:(NSDictionary *)launchOptions
                  platform:(YYPushSDKPatform)platform;
+
 /*! @method
  *  获取设备token。
  *

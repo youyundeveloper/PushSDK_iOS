@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		C63BB8531CE1C949008672D7 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = C63BB84F1CE1C949008672D7 /* README.md */; };
 		C69AF64A1D504DAD00F49A5A /* public.der in Resources */ = {isa = PBXBuildFile; fileRef = C69AF6491D504DAD00F49A5A /* public.der */; };
-		C6A7F6FA1D87EB2800CCDA41 /* libSHPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6A7F6F91D87EB2800CCDA41 /* libSHPushSDK.a */; };
+		C6C0F16C1DB8B77D00E295AC /* libSHPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C0F16B1DB8B77D00E295AC /* libSHPushSDK.a */; };
 		C6D034661C3BB07900B451A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D034651C3BB07900B451A3 /* main.m */; };
 		C6D034801C3BB0E800B451A3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D0347B1C3BB0E800B451A3 /* ViewController.m */; };
 		C6D034811C3BB0E800B451A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D0347C1C3BB0E800B451A3 /* AppDelegate.m */; };
@@ -29,7 +29,8 @@
 		C63BB84A1CE1C949008672D7 /* SHPushSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPushSDK.h; sourceTree = "<group>"; };
 		C63BB84F1CE1C949008672D7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C69AF6491D504DAD00F49A5A /* public.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public.der; sourceTree = "<group>"; };
-		C6A7F6F91D87EB2800CCDA41 /* libSHPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSHPushSDK.a; sourceTree = "<group>"; };
+		C6C0F16A1DB8A82500E295AC /* SHPushSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SHPushSDKDemo.entitlements; sourceTree = "<group>"; };
+		C6C0F16B1DB8B77D00E295AC /* libSHPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSHPushSDK.a; sourceTree = "<group>"; };
 		C6D034611C3BB07900B451A3 /* SHPushSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHPushSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6D034651C3BB07900B451A3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C6D034751C3BB07900B451A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -55,7 +56,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6D034A11C3BB1DC00B451A3 /* libsqlite3.dylib in Frameworks */,
-				C6A7F6FA1D87EB2800CCDA41 /* libSHPushSDK.a in Frameworks */,
+				C6C0F16C1DB8B77D00E295AC /* libSHPushSDK.a in Frameworks */,
 				C6D0349F1C3BB1C400B451A3 /* libz.1.dylib in Frameworks */,
 				C6D0349C1C3BB19B00B451A3 /* CFNetwork.framework in Frameworks */,
 				C6D0349A1C3BB19600B451A3 /* CoreTelephony.framework in Frameworks */,
@@ -71,7 +72,7 @@
 		C63BB8481CE1C949008672D7 /* SHPushSDK */ = {
 			isa = PBXGroup;
 			children = (
-				C6A7F6F91D87EB2800CCDA41 /* libSHPushSDK.a */,
+				C6C0F16B1DB8B77D00E295AC /* libSHPushSDK.a */,
 				C63BB8491CE1C949008672D7 /* include */,
 				C63BB84F1CE1C949008672D7 /* README.md */,
 			);
@@ -107,6 +108,7 @@
 		C6D034631C3BB07900B451A3 /* SHPushSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C6C0F16A1DB8A82500E295AC /* SHPushSDKDemo.entitlements */,
 				C63BB8481CE1C949008672D7 /* SHPushSDK */,
 				C6D0347D1C3BB0E800B451A3 /* AppDelegate.h */,
 				C6D0347C1C3BB0E800B451A3 /* AppDelegate.m */,
@@ -342,6 +344,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SHPushSDKDemo/SHPushSDKDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -352,6 +355,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SHPushSDKDemo/SHPushSDK",
 					"$(PROJECT_DIR)/SHPushSDK",
+					"$(PROJECT_DIR)/UMessage_Sdk_1.3.0",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shihui.SHPushSDKDemo;
@@ -364,6 +368,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SHPushSDKDemo/SHPushSDKDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -374,6 +379,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SHPushSDKDemo/SHPushSDK",
 					"$(PROJECT_DIR)/SHPushSDK",
+					"$(PROJECT_DIR)/UMessage_Sdk_1.3.0",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shihui.SHPushSDKDemo;
